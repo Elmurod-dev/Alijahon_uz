@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Detail</title>
+    <style>
+        /* General styles */
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f4f6;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        .order-info {
+            padding: 25px 20px;
+        }
+
+        .order-info h3 {
+            margin: 0 0 20px;
+            font-size: 1.4em;
+            color: #333;
+        }
+
+        .order-info p {
+            margin: 10px 0;
+            font-size: 1em;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .order-info p strong {
+            color: #333;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            text-align: center;
+            color: white;
+        }
+
+        /* Status styles */
+        .status.new { background-color: #f39c12; }
+        .status.ready_to_deliver { background-color: #8e44ad; }
+        .status.delivering { background-color: #3498db; }
+        .status.delivered { background-color: #27ae60; }
+        .status.cancelled_phone, .status.cancelled { background-color: #e74c3c; }
+        .status.archived { background-color: #95a5a6; }
+
+        .footer {
+            background: #f9f9f9;
+            text-align: center;
+            padding: 15px 0;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .footer a {
+            text-decoration: none;
+            color: #4CAF50;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: #2E7D32;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Buyurtma Tafsilotlari</h1>
+        </div>
+        <div class="order-info">
+            <h3>Buyurtma haqida ma'lumot</h3>
+            <p><strong>Ism:</strong> John Doe</p>
+            <p><strong>Telefon:</strong> +998 90 123 45 67</p>
+            <p><strong>Mahsulot:</strong> Telefon Case</p>
+            <p><strong>Soni:</strong> 2</p>
+            <p><strong>Buyurtma berilgan sana:</strong> 2024-07-01 14:23</p>
+            <p><strong>Status:</strong> 
+                <span class="status new">Yangi</span>
+            </p>
+        </div>
+        <div class="footer">
+            <a href="#">Qo'shimcha ma'lumot olish</a>
+        </div>
+    </div>
+</body>
+</html>

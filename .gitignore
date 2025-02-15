@@ -1,0 +1,8 @@
+apps/migrations/*
+.idea/
+.venv/
+#media/*
+db.sqlite3/
+temp.txt/
+
+

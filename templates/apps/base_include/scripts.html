@@ -1,0 +1,238 @@
+{#------------------------------ phone number ----------------------------------#}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
+<script>
+    $('#phone-mask').inputmask({
+        "mask": "+\\9\\98(99) 999-99-99"
+    });
+    $('#messages-modal').modal('show');
+</script>
+
+{#-------------------------------------------------------------------------------#}
+
+<script>
+    $(function () {
+        var availableTags = [
+
+            "Savdogarlar ustozi 1 va 2-kitoblar yana sotuvda",
+
+            "Ayol immun sino tib fermasi",
+
+            "Nabaviy tarbiya",
+
+            "POLYCARBON Qo&#x27;l Soati",
+
+            "Hublot geneve",
+
+            "Erkaklar uchun magnetli ichki kiyim",
+
+            "(Patek filip) O‘zbekiston gerbi tushirilgan soat",
+
+            "Fucda soati",
+
+            "Avtomobil uchun elektron soat",
+
+            "MUKOSHAFATUL QULUB kitobi",
+
+            "Choʻziluvchan kapron.",
+
+            "Avtomobil plastik qisimlari uchun gel",
+
+            "Nokia 6310",
+
+            "Pres uchun rolik",
+
+            "Vosmoy soch uchun balzam Camera",
+
+            "O‘zbekiston gerbi va xaritasi tushirilgan soat",
+
+            "POLIROFKA AVTOMASHINA UCHUN (sarqi karopka)",
+
+            "Universal Gadjet (2)",
+
+            "Universal Gadjet (1)",
+
+            "Bolalar uchun havoli grusha",
+
+        ];
+        $("#search-input").autocomplete({
+            source: availableTags
+        });
+        console.log(availableTags);
+    });
+</script>
+
+
+{#================================================================================#}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#id_region').change(function () {
+            var region_id = $(this).val();
+            if (region_id) {
+                $.ajax({
+                    url: '{% url "get_districts" %}',
+                    data: {
+                        'region_id': region_id
+                    },
+                    success: function (data) {
+                        $('#id_district').empty();
+                        $('#id_district').append('<option value="">Tumanni tanlang</option>');
+                        $.each(data, function (key, value) {
+                            $('#id_district').append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+                    }
+                });
+            } else {
+                $('#id_district').empty();
+                $('#id_district').append('<option value="">Tumanni tanlang</option>');
+            }
+        });
+    });
+</script>
+
+
+{#================================== wishlist ==================================================#}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.wish-btn').click(function () {
+                const product_id = $(this).data('product-id');
+                var button = $(this);
+                var csrftoken = getCookie('csrftoken');
+                console.log(product_id)
+                if (product_id) {
+                    $.ajax({
+                        url: '{% url "wishlist" %}',
+                        type: 'POST',
+                        data: {
+                            'product_id': product_id
+                        },
+                        beforeSend: function (xhr, settings) {
+                            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                        },
+                        success: function (response) {
+                            console.log("AJAX response:", response.response);
+                            if (response.response === true) {
+                                button.addClass('bg-danger');
+                            } else {
+                                button.removeClass('bg-danger');
+
+                            }
+
+                        },
+                        error: function (xhr, status, error) {
+                        }
+                    });
+                } else {
+
+                }
+            }
+        )
+        ;
+    });
+</script>
+
+{#======================================== oqim =================================#}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.btn_open_modal').click(function () {
+            var product_id = $(this).attr('name');
+            var salesman_price = $(this).closest('.card').find('.salesman_price strong').text();
+
+            $('#hidden_product').val(product_id);
+            $('#id_discount').attr("placeholder", "Chegirma miqdori: " + salesman_price + " gacha");
+        })
+    });
+</script>
+
+{#--------------------------------------- copy ---------------------------------------#}
+
+<script>
+
+    $(".card-body .copy_ref_bn").on('click', function () {
+        var copyText = $(this).parent().find('.ref_link').get(0);
+
+        copyText.select();
+        document.execCommand("copy");
+        $(this).text('Nusxa olindi');
+    });
+</script>
+
+
+{#--------------------------------------- search ----------------------------------------#}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.getElementById('search-input-tmp');
+    const productsContainer = document.querySelector('.row');  // Mahsulot kartalari joylashgan container
+
+    searchInput.addEventListener('keyup', function () {
+        const query = searchInput.value;
+        if (query.length >= 0) {  
+            fetch(`{% url 'admin_page' %})
+                .then(response => response.json())
+                .then(data => {
+                    productsContainer.innerHTML = '';  // Hozirgi mahsulotlarni tozalash
+                    if (data.length > 0) {
+                        data.forEach(product => {
+                            const productCard = `
+                                <div class="col-sm-4 p-2">
+                                    <div class="card">
+                                        <a href="#" target="_blank">
+                                            <img class="card-img-top" src="${product.image_url}"
+                                                 style="width: 330px; height: 300px" alt="${product.name}">
+                                        </a>
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                <a href="${product.url}" target="_blank">
+                                                    ${product.name}
+                                                </a>
+                                            </h5>
+                                            <p class="text-muted">${product.discount_price.toLocaleString()} so'm</p>
+                                        </div>
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">To'lov: <strong>${product.salesman_price.toLocaleString()} so'm</strong></li>
+                                            <li class="list-group-item">Zaxirada: <strong>${product.quantity} ta</strong></li>
+                                            <li class="list-group-item">Chegirma: <strong>${product.discount ? 'Bor' : 'Yo\'q'}</strong></li>
+                                        </ul>
+                                        <a href="https://t.me/alijahon_uz_Internet_magazin/1656" class="btn bg-danger text-white mt-2">Reklama Posti</a>
+                                        <button class="btn btn-primary btn_open_modal mt-2" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" name="${product.id}">
+                                            Oqim yaratish
+                                        </button>
+                                        <a href="/admin_page/product/${product.id}" class="btn bg-danger text-white mt-2">Batafsil</a>
+                                    </div>
+                                </div>
+                            `;
+                            productsContainer.insertAdjacentHTML('beforeend', productCard);
+                        });
+                    } else {
+                        productsContainer.innerHTML = '<p>Natijalar topilmadi</p>';
+                    }
+                })
+                .catch(error => console.error('Qidiruv natijalarini olishda xatolik:', error));
+        } else {
+            productsContainer.innerHTML = '';  // Agar qidiruv juda qisqa bo'lsa, container tozalanadi
+        }
+    });
+});
+</script>
+
+
+{#======================== money =================================#}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
+<script>
+    $('#card-mask').inputmask({
+        "mask": "9999 9999 9999 9999"
+    });
+</script>
+
+{#---------------------- coin --------------------------#}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
+<script>
+    $('#card-mask2').inputmask({
+        "mask": "9999 9999 9999 9999"
+    });
+</script>
+
+

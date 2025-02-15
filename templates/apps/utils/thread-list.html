@@ -1,0 +1,73 @@
+{% extends 'apps/base_include/base.html' %}
+{% block main %}
+    <div class="card-body">
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Facebook dan olingan lidlarni yuklash</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" class="form-class" action="/admin_page/upload-csv" enctype="multipart/form-data">
+                            <input type="hidden" name="csrfmiddlewaretoken" value="hwKQ0oxS7dOr9jb8xEdcIyg0XzaseVzlp6JBvBiOXikTgO8tWUGfpjZZC5C3Tknz">
+                            <input name="stream_id" type="hidden" id="hidden_stream_id">
+                            <input name="file" type="file" accept=".csv" required="">
+                            <input type="submit" class="btn btn-primary mt-4" value="Csv fayl yuklash">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <br>
+            <h3 class="text-center"> Mening havolalarim </h3>
+            <br>
+            <div class="row">
+                {% for thread in threads %}
+                    <div class="col-sm-4">
+                        <div class="card-header">
+                            <h5>{{ thread.title }}</h5>
+                            <h5>- {{ thread.discount_price }}</h5>
+                        </div>
+                        <div class="card">
+                            <div class="card-body" style="position: relative;">
+                                <div class="form-group">
+                                    <input type="text" value="http://{{ request.get_host }}:8000/thread/{{ thread.id }}" readonly="" class="ref_link form-control" id="link-{{ thread.id }}">
+                                </div>
+                                <button class="copy_ref_bn btn btn-primary" style="float:left; margin-right:9px; margin-top: 9px;" onclick="copyLink({{ thread.id }})">Nusxa ko'chirish</button>
+                                <a href="https://alijahon.uz/oqim/{{ thread.id }}" target="_blank"><i class="fa-solid fa-square-arrow-up-right" style="font-size: 29px; float:left; color:#e52c2c; margin-top: 9px; margin-right:9px;"></i></a>
+                                <a href="https://t.me/AlijahonBot?start=order_{{ thread.id }}" target="_blank"><i class="fa-brands fa-telegram" style="font-size: 29px; float:left; color:#e52c2c; margin-top: 9px;"></i></a>
+
+                                <button class="btn btn-primary btn_open_modal" type="button" data-bs-toggle="modal" style="float:left; margin-right:9px; margin-left: 9px; margin-top: 9px;" data-bs-target="#exampleModal" name="{{ thread.id }}">
+                                    csv
+                                </button>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyLink(threadId) {
+            // Input element id
+            const copyText = document.getElementById('link-' + threadId);
+            
+            // Select the text field
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); // For mobile devices
+            
+            // Copy the text inside the text field
+            document.execCommand('copy');
+            
+            // Optional: Show an alert or message to confirm the copy
+            alert("Havola nusxalandi: " + copyText.value);
+        }
+    </script>
+{% endblock %}

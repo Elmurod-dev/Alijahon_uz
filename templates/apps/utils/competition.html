@@ -1,0 +1,75 @@
+{% extends 'apps/base_include/base.html' %}
+{% block main %}
+    <img class="img-fluid" src="https://alijahon.uz/media/competition/IMG_5345.jpeg" alt="Konkurs">
+    <div class="card-body">
+        <h3 class="card-title">Alijahon.uz</h3>
+        <p class="card-text"></p>
+        <p>Alijahon.uz sayti navbatdagi konkursiga<br>
+            Start berad hammaga omad !!</p>
+        <p></p>
+        <div class="row light">
+            <div class="col-6 col-sm-6 col-lg-4 mb-4">
+                <div class="card text-white bg-info">
+                    <div class="card-body">
+                        <div class="card-title">Boshlash</div>
+                        <p class="card-text">20-Sentabr, 2024-yil</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-sm-6 col-lg-4 mb-4">
+                <div class="card text-white bg-danger">
+                    <div class="card-body">
+                        <div class="card-title">Yakunlash</div>
+                        <p class="card-text">20-Mart, 2025-yil</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-header">
+        <div class="row flex-between-end">
+            <div class="col-auto align-self-center">
+                <h5 class="mb-0" data-anchor="data-anchor" id="table-example">Konkurs natijalari<a
+                        class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="#" href="#table-example"
+                        style="padding-left: 0.375em;"></a></h5>
+            </div>
+        </div>
+    </div>
+    <div class="card-body pt-0">
+        <div class="tab-content">
+            <div class="tab-pane preview-tab-pane active" role="tabpanel"
+                 aria-labelledby="tab-dom-316cb649-6a3e-4ec3-9de8-7d83e880873f"
+                 id="dom-316cb649-6a3e-4ec3-9de8-7d83e880873f">
+                <div id="tableExample"
+                     data-list="{&quot;valueNames&quot;:[&quot;name&quot;,&quot;email&quot;,&quot;age&quot;],&quot;page&quot;:10,&quot;pagination&quot;:true}">
+                    <div class="table-responsive scrollbar">
+                        <table class="table table-bordered table-striped fs--1 mb-0">
+                            <thead class="bg-200 text-900">
+                            <tr>
+                                <th class="sort" data-sort="name">№</th>
+                                <th class="sort" data-sort="email">Sotuvchi</th>
+                                <th class="sort" data-sort="age">Sotilgan</th>
+                            </tr>
+                            </thead>
+                            <tbody class="list">
+
+
+                            {% for competition in competitions %}
+                                <tr>
+                                    <td class="name">{{ forloop.counter }}</td>
+                                    <td class="age">{{ competition.user.phone_number }}</td>
+                                    <td class="email">{{competition.sold_product_count }}</td>
+                                    
+                                </tr>
+                            {% endfor %}
+
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

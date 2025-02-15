@@ -1,0 +1,128 @@
+{% extends 'apps/base_include/base.html' %}
+{% load humanize %}
+{% block main %}
+    <div class="card-body">
+        <div class="container">
+            <br>
+            <div class="row">
+                <div class="col-sm-6 p-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Mening hisobim</h5>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Asosiy balansda: {{ balance|floatformat:0|intcomma }} so'm</h5>
+                            <h5 class="card-title">To'lab berildi: {{ all_sum|floatformat:0|intcomma }} so'm</h5>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-sm-6 p-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>To'lovga sorov berish formasi</h5>
+                        </div>
+                        <nav>
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                <button id="nav-money-tab" class="nav-link active" data-bs-toggle="tab"
+                                        data-bs-target="#nav-money" type="button" role="tab" aria-controls="nav-money"
+                                        aria-selected="true">Pul
+                                </button>
+                                <button class="nav-link" id="nav-coin-tab" data-bs-toggle="tab"
+                                        data-bs-target="#nav-coin" type="button" role="tab" aria-controls="nav-coin"
+                                        aria-selected="false">Tanga
+                                </button>
+                            </div>
+                        </nav>
+                        <div class="tab-content" id="nav-tabContent">
+                            <div class="tab-pane fade show active" id="nav-money" role="tabpanel"
+                                 aria-labelledby="nav-money-tab">
+                                <form class="card-body" action="{% url 'payment' %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="csrfmiddlewaretoken"
+                                           value="PBIvaylRaLi4F3NhEa32Tu7HS2IqLUhOXbHgFL6N0QOwMyKC3qw5AfQGxya1qj52">
+                                    <div class="form-group">
+                                        Karta raqami <input type="text" name="card_number" class="form-control"
+                                                            placeholder="Karta raqamini kiriting" maxlength="16"
+                                                            required="" id="id_card_number">
+                                    </div>
+
+                                    <div class="form-group">
+                                        Amount <input type="number" name="amount" class="form-control"
+                                                      placeholder="Miqdorini kiriting" required="" id="id_amount">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <select name="type" class="form-control class-type" style="display: none;"
+                                                id="id_type">
+                                            <option value="money">Pul</option>
+
+                                            <option value="coin">Tanga</option>
+
+                                        </select>
+                                    </div>
+
+                                    <input type="submit" value="Tasdiqlash" class="btn btn-primary">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+            <br>
+
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Sana</th>
+                        <th scope="col">Hisob raqam</th>
+                        <th scope="col">Summa</th>
+                        <th scope="col">Holat</th>
+                        <th scope="col">Xabar</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% if payments %}
+                    	{% for payment in payments %}
+                                <tr>
+                                    <td class="number">{{ forloop.counter }}</td>
+                                    <td class="date">{{ payment.created_at }}</td>
+                                    <td class="number">{{payment.card_number }}</td>
+                                    <td class="number">{{payment.amount }}</td>
+                                    
+                                    {% if payment.status == payment.StatusChoices.in_progress %}
+                                    	<td class="text" style="color: #008fa1;">Jarayonda</td>
+                                    {% elif payment.status == payment.StatusChoices.canceled %}
+                                        <td class="text" style="color: red;">Bekor qilindi</td>
+                                    {% elif payment.status == payment.StatusChoices.accepted %}
+                                        <td class="text" style="color: #007aff;">Qabul qilindi</td>
+                                    {% elif payment.status == payment.StatusChoices.completed %}
+                                        <td class="text" style="color: #0dd481;">Tasdiqlandi</td>
+                                    {% endif %}
+                                
+                                    <td class="text">{{payment.message }}</td>
+                                    
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                        
+                         <tr class="text-center">
+
+                        <th colspan="5"> Hozircha sizda pul yechish sorovlari mavjud emas</th>
+
+                    </tr>
+                        
+                    {% endif %}
+                    
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

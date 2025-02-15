@@ -1,0 +1,55 @@
+{% extends 'apps/base_include/base.html' %}
+{% load humanize %}
+{% block main %}
+    <div class="container text-center pb-5 card" style="margin-top: 80px;">
+        <div class="card-body" style="margin-top: 30px">
+
+        </div>
+
+
+        <div style="height: 100px; width: 100px; margin-left: auto; margin-right: auto; margin-top: 30px;">
+    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 48 48" style="display: block; margin-left: auto; margin-right: auto;">
+        <path fill="#4caf50" d="M44,24c0,11.045-8.955,20-20,20S4,35.045,4,24S12.955,4,24,4S44,12.955,44,24z"></path>
+        <path fill="#ccff90" d="M34.602,14.602L21,28.199l-5.602-5.598l-2.797,2.797L21,33.801l16.398-16.402L34.602,14.602z"></path>
+    </svg>
+</div>
+
+
+
+        <h3 class="mt-4">Arizangiz qabul qilindi!</h3>
+        <p>Batafsil ma'lumot uchun operator yaqin vaqt ichida siz bilan aloqaga chiqadi.</p>
+        <p>Iltimos, telefoningiz yoqilgan holda bo'lsin!</p>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Mahsulot</th>
+                <th scope="col">Summa</th>
+                <th scope="col">Soni</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="col">{{ product.name }}</th>
+                <th scope="col">{{ all_price|floatformat:0|intcomma }}</th>
+                <th scope="col">{{ quantity }}</th>
+            </tr>
+
+            <tr>
+                <th scope="col">Yetkazib berish</th>
+                <th scope="col">20000, 30000</th>
+            </tr>
+
+
+            </tbody>
+        </table>
+        <div class="row">
+            <div class="col-md-6">
+
+
+            </div>
+            <div class="col-md-6 mt-3">
+                <a href="{% url 'home' %}" class="btn btn-primary w-50">Boshqa mahsulotlar</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,16 @@
+[
+    {"model": "apps.region", "fields": {"name": "Qoraqalpog‘iston Respublikasi"}},
+    {"model": "apps.region", "fields": {"name": "Andijon viloyati"}},
+    {"model": "apps.region", "fields": {"name": "Buxoro viloyati"}},
+    {"model": "apps.region", "fields": {"name": "Jizzax viloyati"}},
+    {"model": "apps.region", "fields": {"name": "Qashqadaryo viloyati"}},
+    {"model": "apps.region", "fields": {"name": "Navoiy viloyati"}},
+    {"model": "apps.region", "fields": {"name": "Namangan viloyati"}},
+    {"model": "apps.region", "fields": {"name": "Samarqand viloyati"}},
+    {"model": "apps.region", "fields": {"name": "Surxandaryo viloyati"}},
+    {"model": "apps.region", "fields": {"name": "Sirdaryo viloyati"}},
+    {"model": "apps.region", "fields": {"name": "Toshkent viloyati"}},
+    {"model": "apps.region", "fields": {"name": "Farg‘ona viloyati"}},
+    {"model": "apps.region", "fields": {"name": "Xorazm viloyati"}},
+    {"model": "apps.region", "fields": {"name": "Toshkent shahri"}}
+]

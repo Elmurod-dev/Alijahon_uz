@@ -1,0 +1,52 @@
+{% extends 'apps/base_include/base.html' %}
+{% block main %}
+	<div class="bg-white dark__bg-1100 p-4 rounded-3 shadow-sm">
+        <!-- Profile Section -->
+        <div class="text-center mb-4">
+            <img class="img-thumbnail img-fluid rounded-circle shadow-lg mb-3" src="data:image/png;base64,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" alt="Profile Image" width="120">
+            {% if request.user.first_name %}
+            	<h3 class="mb-1">{{ request.user.first_name }} {{ request.user.last_name }}</h3>
+            {% endif %} <h6 class="mb-1"></h6>
+            <h6 class="mb-1">+998944160076</h6>
+            <p class="text-muted fs--2 mb-2">Phone number</p>
+            <p class="fs--2 mb-1">
+                <a class="btn btn-link text-700" href="/settings">Sozlamalarga o'tish</a>
+            </p>
+        </div>
+    </div>
+    <div class="card-body fs--1 p-0">
+        <a class="border-bottom-0 notification rounded-0 border-x-0 border border-300" href="{% url 'favorite_products' slug='barchasi' %}">
+            <div class="notification-avatar">
+                <div class="avatar avatar-xl me-3">
+                    <div class="avatar-emoji rounded-circle "><span role="img" aria-label="Emoji">📌</span></div>
+                </div>
+            </div>
+            <div class="notification-body">
+                <p class="mb-1"><strong>Mening sevimlarim</strong></p>
+            </div>
+        </a>
+
+        <a class="border-bottom-0 notification rounded-0 border-x-0 border border-300" href="{% url 'orders' %}">
+            <div class="notification-avatar">
+                <div class="avatar avatar-xl me-3">
+                    <div class="avatar-emoji rounded-circle "><span role="img" aria-label="Emoji">🏷️</span></div>
+                </div>
+            </div>
+            <div class="notification-body">
+                <p class="mb-1"><strong>Mening buyurtmalarim</strong></p>
+            </div>
+        </a>
+
+        <a class="border-bottom-0 notification rounded-0 border-x-0 border border-300" href="http://t.me/ernazarov14">
+            <div class="notification-avatar">
+                <div class="avatar avatar-xl me-3">
+                    <div class="avatar-emoji rounded-circle "><span role="img" aria-label="Emoji">💬</span></div>
+                </div>
+            </div>
+            <div class="notification-body">
+                <p class="mb-1"><strong>Mijozlarni qo'llab-quvvatlash</strong></p>
+            </div>
+        </a>
+
+    </div>
+{% endblock %}

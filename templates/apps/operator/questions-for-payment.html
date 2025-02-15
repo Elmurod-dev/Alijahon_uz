@@ -1,0 +1,204 @@
+{% extends 'apps/base_include/base.html' %}
+{% load humanize %}
+{% block main %}
+
+    <div class="card-header">
+        <div class="row flex-between-center">
+            <div class="col-4 col-sm-auto d-flex align-items-center pe-0">
+                <h5 class="fs-0 mb-0 text-nowrap py-2 py-xl-0">Orders</h5>
+            </div>
+            <div class="col-8 col-sm-auto ms-auto text-end ps-0">
+                <div class="d-none" id="orders-bulk-actions">
+                    <div class="d-flex">
+                        <select class="form-select form-select-sm" aria-label="Bulk actions">
+                            <option selected="">Bulk actions</option>
+                            <option value="Refund">Refund</option>
+                            <option value="Delete">Delete</option>
+                            <option value="Archive">Archive</option>
+                        </select>
+                        <button class="btn btn-falcon-default btn-sm ms-2" type="button">Apply</button>
+                    </div>
+                </div>
+                <div id="orders-actions">
+                    <button class="btn btn-falcon-default btn-sm" type="button">
+                        <svg class="svg-inline--fa fa-plus fa-w-14" data-fa-transform="shrink-3 down-2"
+                             aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img"
+                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""
+                             style="transform-origin: 0.4375em 0.625em;">
+                            <g transform="translate(224 256)">
+                                <g transform="translate(0, 64)  scale(0.8125, 0.8125)  rotate(0 0 0)">
+                                    <path fill="currentColor"
+                                          d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
+                                          transform="translate(-224 -256)"></path>
+                                </g>
+                            </g>
+                        </svg>
+                        <!-- <span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span> Font Awesome fontawesome.com --><span
+                            class="d-none d-sm-inline-block ms-1">New</span></button>
+                    <button class="btn btn-falcon-default btn-sm mx-2" type="button">
+                        <svg class="svg-inline--fa fa-filter fa-w-16" data-fa-transform="shrink-3 down-2"
+                             aria-hidden="true" focusable="false" data-prefix="fas" data-icon="filter" role="img"
+                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""
+                             style="transform-origin: 0.5em 0.625em;">
+                            <g transform="translate(256 256)">
+                                <g transform="translate(0, 64)  scale(0.8125, 0.8125)  rotate(0 0 0)">
+                                    <path fill="currentColor"
+                                          d="M487.976 0H24.028C2.71 0-8.047 25.866 7.058 40.971L192 225.941V432c0 7.831 3.821 15.17 10.237 19.662l80 55.98C298.02 518.69 320 507.493 320 487.98V225.941l184.947-184.97C520.021 25.896 509.338 0 487.976 0z"
+                                          transform="translate(-256 -256)"></path>
+                                </g>
+                            </g>
+                        </svg>
+                        <!-- <span class="fas fa-filter" data-fa-transform="shrink-3 down-2"></span> Font Awesome fontawesome.com --><span
+                            class="d-none d-sm-inline-block ms-1">Filter</span></button>
+                    <button class="btn btn-falcon-default btn-sm" type="button">
+                        <svg class="svg-inline--fa fa-external-link-alt fa-w-16" data-fa-transform="shrink-3 down-2"
+                             aria-hidden="true" focusable="false" data-prefix="fas" data-icon="external-link-alt"
+                             role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""
+                             style="transform-origin: 0.5em 0.625em;">
+                            <g transform="translate(256 256)">
+                                <g transform="translate(0, 64)  scale(0.8125, 0.8125)  rotate(0 0 0)">
+                                    <path fill="currentColor"
+                                          d="M432,320H400a16,16,0,0,0-16,16V448H64V128H208a16,16,0,0,0,16-16V80a16,16,0,0,0-16-16H48A48,48,0,0,0,0,112V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V336A16,16,0,0,0,432,320ZM488,0h-128c-21.37,0-32.05,25.91-17,41l35.73,35.73L135,320.37a24,24,0,0,0,0,34L157.67,377a24,24,0,0,0,34,0L435.28,133.32,471,169c15,15,41,4.5,41-17V24A24,24,0,0,0,488,0Z"
+                                          transform="translate(-256 -256)"></path>
+                                </g>
+                            </g>
+                        </svg>
+                        <!-- <span class="fas fa-external-link-alt" data-fa-transform="shrink-3 down-2"></span> Font Awesome fontawesome.com --><span
+                            class="d-none d-sm-inline-block ms-1">Export</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body p-0">
+        <div class="table-responsive scrollbar">
+            <table class="table table-sm table-striped fs--1 mb-0 overflow-hidden">
+                <thead class="bg-200 text-900">
+                <tr>
+                    <th>
+                        <div class="form-check fs-0 mb-0 d-flex align-items-center">
+                            raqam
+                        </div>
+                    </th>
+                    <th class="sort pe-1 align-middle white-space-nowrap" data-sort="order">Payment</th>
+                    <th class="sort pe-1 align-middle white-space-nowrap pe-7" data-sort="date">Sana</th>
+                    <th class="sort pe-1 align-middle white-space-nowrap" data-sort="address"
+                        style="min-width: 12.5rem;">Karta raqami
+                    </th>
+                    <th class="sort pe-1 align-middle white-space-nowrap text-center" data-sort="status">Status</th>
+                    <th class="sort pe-1 align-middle white-space-nowrap text-end" data-sort="amount">Qiymat</th>
+                    <th class="no-sort"></th>
+                </tr>
+
+                </thead>
+                <tbody class="list" id="table-orders-body">
+                {% for payment in payments %}
+                    <tr class="btn-reveal-trigger">
+                        <td class="align-middle" style="width: 28px;">
+                            <div class="form-check fs-0 mb-0 d-flex align-items-center">
+                                {{ forloop.counter }}
+                            </div>
+                        </td>
+                        <td class="order py-2 align-middle white-space-nowrap"><a
+                                href="{% url 'transaction' payment.pk %}"> <strong>#{{ payment.pk }}</strong></a> by
+                            <strong>{{ payment.receiver.first_name }}</strong><br>+998{{ payment.receiver.phone_number }}
+                        </td>
+                        <td class="date py-2 align-middle">{{ payment.created_at }}</td>
+                        <td class="address py-2 align-middle white-space-nowrap">{{ payment.card_number }}
+                            <p class="mb-0 text-500">To'lov uchun ariza</p>
+                        </td>
+                    
+                        <td class="status py-2 align-middle text-center fs-0 white-space-nowrap">
+                            {% if payment.status == payment.StatusChoices.completed %}
+                                <span
+                                        class="badge badge rounded-pill d-block badge-soft-success">Completed<svg
+                                        class="svg-inline--fa fa-check fa-w-16 ms-1" data-fa-transform="shrink-2"
+                                        aria-hidden="true"
+                                        focusable="false" data-prefix="fas" data-icon="check" role="img"
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""
+                                        style="transform-origin: 0.5em 0.5em;"><g transform="translate(256 256)"><g
+                                        transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path
+                                        fill="currentColor"
+                                        d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"
+                                        transform="translate(-256 -256)"></path></g></g></svg>
+                                    <!-- <span class="ms-1 fas fa-check" data-fa-transform="shrink-2"></span> Font Awesome fontawesome.com -->
+                            </span>
+                            {% elif payment.status == payment.StatusChoices.in_progress %}
+                                <span
+                                        class="badge badge rounded-pill d-block badge-soft-secondary">On Hold<svg
+                                        class="svg-inline--fa fa-ban fa-w-16 ms-1" data-fa-transform="shrink-2"
+                                        aria-hidden="true" focusable="false" data-prefix="fas" data-icon="ban"
+                                        role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+                                        data-fa-i2svg="" style="transform-origin: 0.5em 0.5em;"><g
+                                        transform="translate(256 256)"><g
+                                        transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path
+                                        fill="currentColor"
+                                        d="M256 8C119.034 8 8 119.033 8 256s111.034 248 248 248 248-111.034 248-248S392.967 8 256 8zm130.108 117.892c65.448 65.448 70 165.481 20.677 235.637L150.47 105.216c70.204-49.356 170.226-44.735 235.638 20.676zM125.892 386.108c-65.448-65.448-70-165.481-20.677-235.637L361.53 406.784c-70.203 49.356-170.226 44.736-235.638-20.676z"
+                                        transform="translate(-256 -256)"></path></g></g></svg>
+                                    <!-- <span class="ms-1 fas fa-ban" data-fa-transform="shrink-2"></span> Font Awesome fontawesome.com -->
+                                </span>
+
+                            {% elif payment.status == payment.StatusChoices.accepted %}
+                                <span
+                                        class="badge badge rounded-pill d-block badge-soft-primary">Processing<svg
+                                        class="svg-inline--fa fa-redo fa-w-16 ms-1" data-fa-transform="shrink-2"
+                                        aria-hidden="true" focusable="false" data-prefix="fas" data-icon="redo"
+                                        role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+                                        data-fa-i2svg="" style="transform-origin: 0.5em 0.5em;"><g
+                                        transform="translate(256 256)"><g
+                                        transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path
+                                        fill="currentColor"
+                                        d="M500.33 0h-47.41a12 12 0 0 0-12 12.57l4 82.76A247.42 247.42 0 0 0 256 8C119.34 8 7.9 119.53 8 256.19 8.1 393.07 119.1 504 256 504a247.1 247.1 0 0 0 166.18-63.91 12 12 0 0 0 .48-17.43l-34-34a12 12 0 0 0-16.38-.55A176 176 0 1 1 402.1 157.8l-101.53-4.87a12 12 0 0 0-12.57 12v47.41a12 12 0 0 0 12 12h200.33a12 12 0 0 0 12-12V12a12 12 0 0 0-12-12z"
+                                        transform="translate(-256 -256)"></path></g></g></svg>
+                                    <!-- <span class="ms-1 fas fa-redo" data-fa-transform="shrink-2"></span> Font Awesome fontawesome.com -->
+                                </span>
+
+                            {% elif payment.status == payment.StatusChoices.canceled %}
+                                <span 
+                                        class="badge badge rounded-pill d-block badge-soft-warning">Pending<svg
+                                        class="svg-inline--fa fa-stream fa-w-16 ms-1" data-fa-transform="shrink-2"
+                                        aria-hidden="true" focusable="false" data-prefix="fas" data-icon="stream"
+                                        role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+                                        data-fa-i2svg="" style="transform-origin: 0.5em 0.5em;"><g
+                                        transform="translate(256 256)"><g
+                                        transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path
+                                        fill="currentColor"
+                                        d="M16 128h416c8.84 0 16-7.16 16-16V48c0-8.84-7.16-16-16-16H16C7.16 32 0 39.16 0 48v64c0 8.84 7.16 16 16 16zm480 80H80c-8.84 0-16 7.16-16 16v64c0 8.84 7.16 16 16 16h416c8.84 0 16-7.16 16-16v-64c0-8.84-7.16-16-16-16zm-64 176H16c-8.84 0-16 7.16-16 16v64c0 8.84 7.16 16 16 16h416c8.84 0 16-7.16 16-16v-64c0-8.84-7.16-16-16-16z"
+                                        transform="translate(-256 -256)"></path></g></g></svg>
+                                    <!-- <span class="ms-1 fas fa-stream" data-fa-transform="shrink-2"></span> Font Awesome fontawesome.com -->
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+                        <td class="amount py-2 align-middle text-end fs-0 fw-medium">{{ payment.amount|floatformat:0|intcomma }} sum</td>
+                        <td class="py-2 align-middle white-space-nowrap text-end">
+                            
+                            <div class=" dropdown font-sans-serif position-static">
+                                <a href="{% url 'transaction' payment.pk %}">
+                                <button class="btn btn-primary" type="button" >
+                                    {% if payment.status == payment.StatusChoices.completed %}
+                                    	Tranzaksiya tafsilotlari
+                                    {% elif payment.status == payment.StatusChoices.canceled %}
+                                    	Tranzaksiya tafsilotlari
+                                        {% else %}
+                                        Qabul qilish
+                                    {% endif %} 
+                                
+                                        
+                                </button>
+                                    </a>
+                                
+                            </div>
+                        </td>
+                    </tr>
+
+                {% endfor %}
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}

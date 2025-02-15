@@ -1,0 +1,115 @@
+{% extends 'apps/base_include/base.html' %}
+{% load humanize %}
+
+{% block main %}
+    <div class="container mt-4">
+        <h1 style="color: #0f3d81" class="text-center">Buyurtmalarim</h1>
+        {% if orders %}
+            <div class="mt-4">
+                <!-- Mobil versiyada kartalarga aylantiriladi -->
+                <div class="row">
+                    {% for order in orders %}
+                        <div class="col-12 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        {{ order.product.name }}
+                                        <a href="{% url 'product_detail' order.product.slug %}"
+                                           class="btn btn-link p-0 ms-2" style="font-size: 1.25rem; color: #0f3d81;">
+                                            <i class="fa fa-arrow-right"></i> <!-- Font Awesome strelka ikonkasi -->
+                                        </a>
+                                    </h5>
+
+                                    <p class="card-text">
+                                        <strong>Miqdor:</strong> {{ order.quantity }}<br>
+                                        <strong>Jami narx:</strong> {{ order.price|floatformat:0|intcomma }} UZS<br>
+                                        <strong>Holati:</strong>
+                                        <span
+                                                {% if order.status == order.StatusChoices.new %}
+                                                    style="color: #cc8500"
+                                                {% elif order.status == order.StatusChoices.delivered %}
+                                                    style="color: #007bff"
+                                                {% elif order.status == 'bekor qilingan' %}
+                                                    style="color: red"
+                                                {% endif %}
+                                                    class="badge badge-warning">
+                                          {{ order.status }}
+                                        </span><br>
+                                        <strong>Urtma sanasi:</strong> {{ order.date_ordered }}<br>
+                                    </p>
+                                    <div class="d-flex justify-content-between">
+                                        {% if order.status == 'new' %}
+                                            <a href="{% url 'cancel_order' id=order.id %}"
+                                               class="btn btn-danger btn-sm">Bekor qilish</a>
+                                        {% elif order.status == 'ready_to_deliver' %}
+                                            <h6 style="color: #ffc107">Dostavkaga tayyor...</h6>
+                                        {% elif order.status == 'delivering' %}
+                                            <h6 style="color: #ffc107">Yetkazilmoqda...</h6>
+                                        {% elif order.status == 'delivered' %}
+                                            <h6 style="color: #007bff ">Yetkazildi</h6>
+                                        {% elif order.status == 'cancelled_phone' %}
+                                            <h6 style="color: #dc3545">Telefon ko'tarilmadi</h6>
+                                            <a href="{% url 'recover_order' id=order.id %}"
+                                               class="btn btn-warning btn-sm">Tiklash</a>
+                                        {% elif order.status == 'cancelled' %}
+                                            <h6 style="color: #dc3545">Bekor qilindi</h6>
+                                            <a href="{% url 'recover_order' id=order.id %}"
+                                               class="btn btn-warning btn-sm">Tiklash</a>
+                                        {% elif order.status == 'archived' %}
+                                            <h6 style="color: #6c757d">Arxivlandi</h6>
+                                            <a href="{% url 'recover_order' id=order.id %}"
+                                               class="btn btn-secondary btn-sm">Tiklash</a>
+                                        {% elif order.status == order.StatusChoices.completed %}
+                                            <h6 style="color: #28a745">Yakunlandi</h6>
+                                        {% endif %}
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <div class="alert alert-info text-center mt-4">
+                Sizda hali hech qanday urtma mavjud emas.
+            </div>
+        {% endif %}
+    </div>
+    <style>
+        /* Mobil versiya uchun jadvalni kartalarga aylantirish */
+        @media (max-width: 767px) {
+            .row {
+                display: flex;
+                flex-direction: column; /* Kartalar ko'rinishida */
+            }
+
+            .card {
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                padding: 15px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+
+            .card-title {
+                font-size: 1.25rem;
+                font-weight: bold;
+            }
+
+            .card-text {
+                font-size: 1rem;
+            }
+
+            .d-flex {
+                margin-top: 10px;
+            }
+        }
+
+        /* Katta ekranlar uchun jadvalni ko'rsatish */
+        @media (min-width: 768px) {
+            .row {
+                display: block; /* Jadval ko'rinishida bo'lsin */
+            }
+        }
+    </style>
+{% endblock %}

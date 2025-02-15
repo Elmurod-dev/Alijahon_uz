@@ -1,0 +1,54 @@
+{% extends 'apps/base_include/base.html' %}
+{% load humanize %}
+
+{% block main %}
+    <div class="card-body">
+        <div class="col-lg-8">
+            <form method="post" action="{% url 'create_order_via_thread' slug=product.slug %}">
+                {% csrf_token %}
+                <div class="mb-2">
+                    <label class="form-label" for="formGroupNameInput">Ism:</label>
+                    <input class="form-control" name="full_name" id="formGroupNameInput" type="text" required>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label" for="phone-mask">Telefon nomer:</label>
+                    <input class="form-control" id="phone-mask" name="phone_number" type="text" required>
+                    <input class="form-control" id="phone-mask" name="thread_id" hidden="hidden" type="text" value="{{ thread_id }}">
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label" for="quantity">Miqdor:</label>
+                    <input class="form-control" id="quantity" name="quantity" type="number" min="1" value="1" required>
+                </div>
+
+                <div class="d-grid gap-2 col-6 mx-auto" style="margin-top: 20px;">
+                    <button class="btn btn-primary" type="submit">Buyurtma berish</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8" style="margin-top: 20px;">
+                <img src="/media/{{ product.image }}" alt="{{ product.name }}" class="img-main mb-3 img-fluid">
+                <h5>{{ product.name }}</h5>
+                <p class="fs--1">{{ product.description }}</p>
+                <h4>
+                                        
+                    <span class="text-warning">{% if new_price %}{{ new_price|floatformat:0|intcomma }}  so'm <del class="ms-2 fs--1 text-500">{{ product.price }} </del> {% else %}{{ product.price|floatformat:0|intcomma }} so'm  {% endif %}</span>
+                </h4>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.7/jquery.inputmask.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#phone-mask').inputmask({
+                "mask": "+\\9\\98(99) 999-99-99"
+            });
+        });
+    </script>
+
+{% endblock %}

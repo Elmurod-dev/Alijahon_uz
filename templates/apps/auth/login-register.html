@@ -1,0 +1,76 @@
+{% extends 'apps/base_include/base.html' %}
+{% block main %}
+    <div class="content_auth_form">
+        <div class="content_auth_form_group">
+            <div class="content_auth_form_group_input">
+                <div class="card">
+                        <div class="card-header bg-circle-shape bg-shape text-center p-2"><a
+                                class="font-sans-serif fw-bolder fs-4 z-index-1 position-relative link-light light"
+                                href="/">Alijahon</a></div>
+                    {% if messages %}
+                        {% for message in messages %}
+                        	<h5 style="color: rgba(255,0,24,0.5)">{{ message }}</h5>
+                        {% endfor %}
+                        
+                    {% endif %}
+                        <div class="card-body p-4">
+                            <div class="row flex-between-center">
+                                <div class="col-auto">
+                                    <h3>Kirish</h3>
+                                </div>
+                            </div>
+                            <form method="post">
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between">
+                                        <label class="form-label" for="split-login-email">
+                                            Telefon nomer</label>
+                                    </div>
+                                    <input type="text" name="phone_number" id="phone-mask" class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between">
+                                        <label class="form-label" for="split-login-password">Parol</label>
+                                    </div>
+                                    <input class="form-control" name="password" id="split-login-password"
+                                           type="password">
+                                </div>
+                                <div class="row flex-between-center">
+                                    <div class="col-auto">
+                                        <div class="form-check mb-0">
+                                            <input class="form-check-input" autocomplete="on" type="checkbox"
+                                                   id="split-checkbox">
+                                            
+                                            {% csrf_token %}
+                                            <label class="form-check-label mb-0" for="split-checkbox">
+                                                Men qoidalar bilan tanishdim</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-auto">
+                                        <a class="fs--1" href="#">
+                                            Foydalanish shartlari
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <button class="btn btn-primary d-block w-100 mt-3" type="submit" name="submit">
+                                        Kirish
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.7/jquery.inputmask.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#phone-mask').inputmask({
+            "mask": "+\\9\\98(99) 999-99-99"
+        });
+    });
+</script>
+{% endblock %}
+

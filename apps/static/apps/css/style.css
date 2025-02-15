@@ -1,0 +1,17 @@
+.like-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.like-btn svg {
+    color: #6c757d;
+    width: 24px;
+    height: 24px;
+}
+
+.like-btn.liked svg {
+    color: #e74c3c; /* Red color when liked */
+}

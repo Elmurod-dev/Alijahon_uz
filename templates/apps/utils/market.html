@@ -1,0 +1,273 @@
+{% extends 'apps/base_include/base.html' %}
+{% load humanize %}
+{% block main %}
+    <div class="card-body">
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Oqim yaratish</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="createStreamForm" class="form-class">
+                        {% csrf_token %}
+                        <input name="product_id" type="hidden" id="hidden_product" value="">
+
+
+                        Oqim nomi <input type="text" name="title" class="form-control"
+                                         placeholder="default: product.name" id="id_title">
+
+                        Chegirma <input type="number" name="discount" class="form-control"
+                                        placeholder="Chegirma miqdori: {{ product.discount_price }} so'mgacha"
+                                        id="id_discount">
+
+                        <input type="submit" class="btn btn-primary mt-4" value="Oqim yaratish">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <br>
+        <br>
+        <div class="product-title-container">
+            <h3 class="product-title mb-3">Hozirda sotuvda bor <br> mahsulotlar</h3>
+            <a href="{% url 'thread-list' %}">
+                <button class="custom-btn">oqimlarim</button>
+            </a>
+        </div>
+
+        <br>
+
+        <div class="container border-bottom-4">
+            <div class="header_tab_menu">
+                <div class="header_menu" style="overflow: auto">
+                    <a href="{% url 'thread_product' 'barchasi' %}" class="btn btn-default"> Hammasi </a>
+                    <a href="{% url 'thread_product' 'top_tovarlar' %}" class="btn btn-default"> Top tovarlar </a>
+
+                    {% for category in categorys %}
+                        <a href="{% url 'thread_product' category.slug %}"
+                           class="btn btn-default{% if current_category == category.slug %}active{% endif %}"
+                        > {{ category.name }}</a>
+                    {% endfor %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <h5 style="color: red; text-align: center">hello</h5>
+                        {% endfor %}
+                    {% endif %}
+
+
+                </div>
+                <div class="search-box" style="width: 100%;">
+                    <div class="search-box" style="width: 100%;">
+                        <form action="/admin_page/market/" method="GET" class="position-relative" style="width: 100%"
+                              data-bs-display="static" autocomplete="off">
+                            <input type="hidden" name="csrfmiddlewaretoken"
+                                   value="fFUWmxkMFsaVVwjtlgOhSZPUrmzYU6gHnfTHRK5IvxGn21gOKwhkzKyT6S1zzv4V">
+
+
+                            <!-- <span class="fas fa-search search-box-icon"></span> Font Awesome fontawesome.com -->
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                {% for product in products %}
+                    <div class="col-sm-4 p-2">
+                        <div class="card">
+                            <a href="{% url 'product_detail' slug=product.slug %}" target="_blank">
+                                <img class="card-img-top" src="{{ product.image.url }}" alt="GIONEE FLIP 14 PRO">
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <a href="/product-detail/gionee-flip-14-pro" target="_blank">
+                                        {{ product.name }}
+                                    </a>
+                                </h5>
+                                <p class="text-muted"> {{ product.price|floatformat:0|intcomma }} </p>
+                            </div>
+
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">To'lov: <strong>{{ product.discount|intcomma }}</strong>
+                                </li>
+
+                                <li class="list-group-item">Zaxirada: <strong>{{ product.reserve }} </strong>
+                                </li>
+
+                            </ul>
+
+                            <!-- <form method="post"> <input type="hidden" name="csrfmiddlewaretoken" value="fFUWmxkMFsaVVwjtlgOhSZPUrmzYU6gHnfTHRK5IvxGn21gOKwhkzKyT6S1zzv4V"> <input type="hidden" name="product_id" value="492"> <input type="submit" value="Oqim yaratish" class="btn btn-primary"> </form> -->
+
+                            <a href="https://t.me/c/2007977732/1536" class="btn bg-danger text-white mt-2 mb-1">Reklama
+                                Posti</a>
+                            <button class="btn btn-primary btn_open_modal" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal" data-product-id="{{ product.id }}">
+                                Oqim yaratish
+                            </button>
+
+
+                            <a href="/admin_page/product/492" class="btn bg-danger text-white mt-2">Batafsil</a>
+                        </div>
+                    </div>
+                {% endfor %}
+
+
+
+
+
+
+
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+
+
+                        <li class="page-item"><a class="page-link " href="?page=1">1</a></li>
+
+
+                        <li class="page-item"><a class="page-link " href="?page=2">2</a></li>
+
+
+                        <li class="page-item"><a class="page-link " href="?page=3">3</a></li>
+
+
+                        <li class="page-item"><a class="page-link " href="?page=4">4</a></li>
+
+
+                        <li class="page-item"><a class="page-link " href="?page=5">5</a></li>
+
+
+                        <li class="page-item"><a class="page-link " href="?page=6">6</a></li>
+
+
+                        <li class="page-item"><a class="page-link " href="?page=7">7</a></li>
+
+
+                        <li class="page-item"><a class="page-link " href="?page=8">8</a></li>
+
+
+                        <li class="page-item"><a class="page-link " href="?page=9">9</a></li>
+
+
+                        <li class="page-item"><a class="page-link " href="?page=10">10</a></li>
+
+
+                        <li class="page-item"><a class="page-link " href="?page=11">11</a></li>
+
+
+                        <li class="page-item"><a class="page-link " href="?page=12">12</a></li>
+
+
+                        <li class="page-item"><a class="page-link " href="?page=13">13</a></li>
+
+
+                        <li class="page-item"><a class="page-link " href="?page=14">14</a></li>
+
+
+                        <li class="page-item"><a class="page-link" href="?page=2">Keyingisi</a></li>
+
+
+                    </ul>
+                </nav>
+
+            </div>
+        </div>
+    </div>
+    <!-- jQuery kiritish -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap 4 kiritish -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Modal ko'rsatilganda ishlaydigan hodisa
+            $('#exampleModal').on('show.bs.modal', function (event) {
+                const button = event.relatedTarget; // Modalni ochgan tugma
+                const productId = button.getAttribute('data-product-id');
+                $('#hidden_product').val(productId); // Product ID ni inputga joylash
+            });
+
+            // Formani yuborish
+            const form = document.getElementById('createStreamForm');
+            form.addEventListener('submit', function (e) {
+                e.preventDefault(); // Formani yuborishni to'xtatish
+
+                // Modalni yopish
+                $('#exampleModal').modal('hide'); // Modalni yopish
+
+                // Formadan ma'lumotlarni olish
+                const product_id = document.getElementById('hidden_product').value;
+                const title = document.getElementById('id_title').value;
+                const discount = document.getElementById('id_discount').value;
+
+                // FormData yaratish
+                const data = new FormData();
+                data.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+                data.append('product_id', product_id);
+                data.append('title', title);
+                data.append('discount', discount);
+
+                // Fetch orqali ma'lumot yuborish
+                fetch('/create-thread/', {
+                    method: 'POST',
+                    body: data,
+                })
+            });
+        });
+    </script>
+    <style>
+        .active-category {
+            background-color: #1da1f2;
+            color: #1da1f2;
+            border: 1px solid #1da1f2;
+            font-weight: bold;
+        }
+
+        .product-title-container {
+            width: 80%;
+            margin: 0 auto; /* Markazlashtirish */
+            padding: 20px;
+            background-color: #fefeff; /* Yengil fon rangi */
+            border: 2px solid rgba(101, 157, 255, 0.5); /* Oqish ramka */
+            border-radius: 15px; /* Yumshoq burchaklar */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Yengil soya */
+            text-align: center;
+        }
+
+        .product-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333; /* To'q qora matn rangi */
+            margin: 0;
+        }
+
+        .custom-btn {
+            background-color: #1e3a5f; /* To'q havorang fon rangi */
+            color: white; /* Oq matn rangi */
+            padding: 10px 20px; /* Tugma ichidagi masofa */
+            font-size: 16px; /* Matn o'lchami */
+            border: none; /* Chegarani olib tashlash */
+            border-radius: 25px; /* Yumshoq burchaklar */
+            cursor: pointer; /* Ko'rsatkichni qo'yish */
+            transition: background-color 0.3s, transform 0.3s; /* Tugma ustiga kelganda animatsiya */
+        }
+
+        .custom-btn:hover {
+            background-color: #153a54; /* Hover holatida fon rangi o'zgarishi */
+            transform: translateY(-3px); /* Hover holatida tugma yuqoriga ko'tariladi */
+        }
+
+        .custom-btn:active {
+            transform: translateY(1px); /* Tugma bosilganda pastga siljishi */
+        }
+
+    </style>
+
+{% endblock %}
+

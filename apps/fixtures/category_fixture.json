@@ -1,0 +1,110 @@
+[
+    {
+        "model": "apps.category",
+        "pk": 1,
+        "fields": {
+            "image": "categories/ayollar.png",
+            "name": "Ayollar",
+            "slug": "ayollar"
+        }
+    },
+    {
+        "model": "apps.category",
+        "pk": 2,
+        "fields": {
+            "image": "categories/bolalar-uchun.png",
+            "name": "Bolalar uchun",
+            "slug": "bolalar-uchun"
+        }
+    },
+    {
+        "model": "apps.category",
+        "pk": 3,
+        "fields": {
+            "image": "categories/davolovchi.png",
+            "name": "Davolovchi",
+            "slug": "davolovchi"
+        }
+    },
+    {
+        "model": "apps.category",
+        "pk": 4,
+        "fields": {
+            "image": "categories/elektronika.png",
+            "name": "Elektronika",
+            "slug": "elektronika"
+        }
+    },
+    {
+        "model": "apps.category",
+        "pk": 6,
+        "fields": {
+            "image": "categories/erkaklar-uchun.png",
+            "name": "Erkaklar uchun",
+            "slug": "erkaklar-uchun"
+        }
+    },
+    {
+        "model": "apps.category",
+        "pk": 7,
+        "fields": {
+            "image": "categories/kitoblar.png",
+            "name": "Kitoblar",
+            "slug": "kitoblar"
+        }
+    },
+    {
+        "model": "apps.category",
+        "pk": 8,
+        "fields": {
+            "image": "categories/smart-watch.png",
+            "name": "Aqilli Soatlar",
+            "slug": "aqilli-soatlar"
+        }
+    },
+    {
+        "model": "apps.category",
+        "pk": 9,
+        "fields": {
+            "image": "categories/sovga.png",
+            "name": "Sovg'a",
+            "slug": "sovga"
+        }
+    },
+    {
+        "model": "apps.category",
+        "pk": 10,
+        "fields": {
+            "image": "categories/sport.png",
+            "name": "Sport",
+            "slug": "sport"
+        }
+    },
+    {
+        "model": "apps.category",
+        "pk": 11,
+        "fields": {
+            "image": "categories/uy-uchun.png",
+            "name": "Uy uchun",
+            "slug": "uy-uchun"
+        }
+    },
+    {
+        "model": "apps.category",
+        "pk": 12,
+        "fields": {
+            "image": "categories/mashina-uchun.png",
+            "name": "Mashina uchun",
+            "slug": "mashina-uchun"
+        }
+    },
+    {
+        "model": "apps.category",
+        "pk": 13,
+        "fields": {
+            "image": "categories/yangi-yil.png",
+            "name": "Yangi yil",
+            "slug": "yangi-yil"
+        }
+    }
+]

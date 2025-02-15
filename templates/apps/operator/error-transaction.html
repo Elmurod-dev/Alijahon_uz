@@ -1,0 +1,52 @@
+{% extends 'apps/base_include/base.html' %}
+{% load humanize %}
+{% block main %}
+    <div class="container text-center pb-5 card" style="margin-top: 80px;">
+        <div class="card-body" style="margin-top: 30px">
+
+        </div>
+
+
+        <div style="height: 100px; width: 100px; margin-left: auto; margin-right: auto; margin-top: 30px;">
+  <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 80 80">
+<path fill="#f78f8f" d="M40,77.5C19.322,77.5,2.5,60.678,2.5,40S19.322,2.5,40,2.5S77.5,19.322,77.5,40S60.678,77.5,40,77.5 z"></path><path fill="#c74343" d="M40,3c20.402,0,37,16.598,37,37S60.402,77,40,77S3,60.402,3,40S19.598,3,40,3 M40,2 C19.013,2,2,19.013,2,40s17.013,38,38,38s38-17.013,38-38S60.987,2,40,2L40,2z"></path><path fill="#fff" d="M37 20H43V60H37z" transform="rotate(-134.999 40 40)"></path><path fill="#fff" d="M37 20H43V60H37z" transform="rotate(-45.001 40 40)"></path>
+</svg>
+</div>
+
+
+
+        <h3 class="mt-4">Ariza bekor qilindi</h3>
+        <p>Hurmatli operator, Hatoliklarga yo'l qo'ymang!</p>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Qabul qiluvchi</th>
+                <th scope="col">Telefon raqami</th>
+                <th scope="col">Card number</th>
+                <th scope="col">Amount</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="col">{{ payment.receiver.first_name }} {{ payment.receiver.last_name }}</th>
+                <th scope="col">{{ payment.receiver.phone_number }}</th>
+                <th scope="col">{{ payment.card_number }}</th>
+                <th scope="col">{{ payment.amount|floatformat:0|intcomma }}</th>
+            </tr>
+
+            
+
+
+            </tbody>
+        </table>
+        <div class="row">
+            <div class="col-md-6">
+
+
+            </div>
+            <div class="col-md-6 mt-3">
+                <a href="{% url 'payment' %}" class="btn btn-primary w-50">Orqaga</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

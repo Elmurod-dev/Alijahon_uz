@@ -1,0 +1,218 @@
+{% extends 'apps/base_include/base.html' %}
+{% load humanize %}
+{% load i18n %}
+{% block main %}
+    
+    <div class="container py-5">
+    <div class="form-section">
+
+        <div class="container">
+
+            <div class="col-7">
+
+                <h2>Hammasi to'g'ri kiritilganligiga e'tibor bering!</h2>
+                <p><strong>So'rov Beruvchi Ism Sharifi:</strong>
+                    {{ payment.receiver.first_name }} {{ payment.receiver.last_name }}</p>
+                <p><strong>So'rov Beruvchi Raqami:</strong> <a href="tel:+998{{ payment.receiver.phone_number }}">+998{{ payment.receiver.phone_number }}</a></p>
+                <p><strong>Summa:</strong> {{ payment.amount|floatformat:0|intcomma }} -
+                     sum
+                </p>
+                
+                    
+                
+            </div>
+
+
+        </div>
+
+        
+
+
+    </div>
+    <form method="post" enctype="multipart/form-data">
+        <input type="hidden" name="csrfmiddlewaretoken" value="G2H6CPkgaQuAB1Myfz5OAaV7S5vUPmoX0m1Jdx4jicsYnH5yHtpLcRepJuvlPd6E">
+    {% if payment.status != payment.StatusChoices.completed %}
+    	<input type="file" name="check">
+    {% endif %} 
+    
+
+
+      
+                
+
+        <div class="form-section">
+            <h2>{% trans "Ariza holati" %}</h2>
+            <p>{% trans "Har bir noto'g'ri to'ldirilgan holat uchun" %} -10% {% trans "jarima." %}</p>
+            <div class="mb-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="status" id="new_order"
+                           value="{{ payment.StatusChoices.in_progress }}"{% if payment.status == payment.StatusChoices.in_progress %}
+                           checked {% endif %}required
+                    >
+                    <label class="form-check-label" for="new_order">
+                        <strong>{% trans "Jarayonda" %}</strong>
+                    </label>
+                    <p class="bg-info">
+                        {% trans "To'lov operatorlar tomonidan ko'rib chiqilmoqda, kutish holatida." %}
+                    </p>
+                </div>
+
+                <div class="form-check">
+                    <input
+                            class="form-check-input"
+                            type="radio"
+                            name="status"
+                            id="ready_order"
+                            value="{{ payment.StatusChoices.accepted }}"
+                            {% if payment.status == payment.StatusChoices.accepted %} checked {% endif %}
+                            required
+                    >
+                    <label class="form-check-label" for="ready_order">
+                        <strong>{% trans "Qabul qilindi" %}</strong>
+                    </label>
+                    <p class="bg-primary">
+                        {% trans "To'lovni amalga oshirish mumkin." %}
+                    </p>
+                </div>
+
+                
+
+                <div class="form-check">
+                    <input
+                            class="form-check-input"
+                            type="radio"
+                            name="status"
+                            id="delivered_order"
+                            value="{{ payment.StatusChoices.completed }}"
+                            {% if payment.status == payment.StatusChoices.completed %} checked {% endif %}
+                            required
+                    >
+                    <label class="form-check-label" for="delivered_order">
+                        <strong>{% trans "Tasdiqlandi" %}</strong>
+                    </label>
+                    <p class="bg-success">
+                        {% trans "To'lov amalga oshirildi, yakunlandi." %}
+                    </p>
+                </div>
+
+                
+                <div class="form-check">
+                    <input
+                            class="form-check-input"
+                            type="radio"
+                            name="status"
+                            id="broken_order"
+                            value="{{ payment.StatusChoices.canceled }}"
+                            {% if payment.status == payment.StatusChoices.canceled %} checked {% endif %}
+                            required
+                    >
+                    <label class="form-check-label" for="broken_order">
+                        <strong>{% trans "bekor qilindi" %}</strong>
+                    </label>
+                    <p class="bg-danger">
+                        {% trans "Ariza bekor qilindi." %}
+                    </p>
+                </div>
+
+                
+                
+            </div>
+        </div>
+    
+    {% if payment.status != payment.StatusChoices.canceled and payment.status != payment.StatusChoices.completed %}
+    	<div class="form-section">
+            <div class="mb-3">
+                <label for="comment" class="form-label required-label">
+                    <strong>Komment:</strong>
+                </label>
+                <textarea type="text" name="comment_operator" class="form-control" id="comment" rows="3" placeholder="Ushbu buyurtma uchun izoh..."></textarea>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end mb-3">
+        <button type="submit" class="btn btn-primary">
+                Yuborish
+            </button>
+    {% endif %} 
+    
+        
+    
+
+            
+           
+            	
+            
+        </div>
+    </form>
+</div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+{#<script src="{% static 'apps/js/regions.js' %}"></script>#}
+{% include 'apps/base_include/scripts.html' %}
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#id_region').change(function () {
+            var region_id = $(this).val();
+            if (region_id) {
+                $.ajax({
+                    url: '{% url "get_districts" %}',
+                    data: {'region_id': region_id},
+                    success: function (data) {
+                        var districtDropdown = $('#id_district');
+                        districtDropdown.empty();
+                        districtDropdown.append('<option value="">Tumanni tanlang</option>');
+                        $.each(data, function (key, value) {
+                            districtDropdown.append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+                    }
+                });
+            } else {
+                $('#id_district').empty().append('<option value="">Tumanni tanlang</option>');
+            }
+        });
+    });
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+<script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
+{#<script src="{% static 'apps/js/regions_filter.js' %}"></script>#}
+<script>
+    $(function () {
+        $('select').multipleSelect({
+            multiple: true,
+            multipleWidth: 500,
+            maxHeight: 200,
+            maxHeightUnit: 50,
+            filter: true
+        })
+    })
+</script>
+<script>
+    $(document).ready(function () {
+        $('#region-select').change(function () {
+            var regionId = $(this).val();
+            var $districtSelect = $('#district-select');
+            $districtSelect.empty();
+            $districtSelect.append('<option value="">All District</option>');
+
+            if (regionId) {
+                $.ajax({
+                    url: 'operator/ajax/get-districts/' + regionId + '/',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        $.each(data, function (index, district) {
+                            $districtSelect.append('<option value="' + district.id + '">' + district.name + '</option>');
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('An error occurred:', error);
+                    }
+                });
+            }
+        });
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+{% endblock %}

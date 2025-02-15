@@ -1,0 +1,158 @@
+import json
+import re
+
+from django.contrib.auth import login,logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import check_password, make_password
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import ListView, DetailView, View, DeleteView
+
+from apps import models
+from apps.models import Product, Category, User, Wishlist
+
+
+class HomeListView(ListView):
+    template_name = 'home.html'
+    model = Category
+    context_object_name = 'categorys'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data['products'] = Product.objects.all()
+
+        if self.request.user.is_authenticated:
+            data['user'] = self.request.user
+
+            liked_products = self.request.user.liked_products.all()
+            data['liked_products_ids'] = [product.id for product in liked_products]
+
+        return data
+
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = 'apps/product/product-detail.html'
+    context_object_name = 'product'
+    slug_url_kwarg = 'slug'
+    slug_field = 'slug'
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data['user'] = self.request.user
+        return data
+
+
+class ProductListView(ListView):
+    model = Product
+    context_object_name = 'products'
+    template_name = 'apps/product/mahsulotlar.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data['products'] = Product.objects.all()
+        data['categorys'] = Category.objects.all()
+        return data
+
+class CategoryProduct(ListView):
+    model = Product
+    context_object_name = 'products'
+    template_name = 'apps/product/mahsulotlar.html'
+
+    def get_queryset(self):
+        if self.kwargs['slug']!='barchasi':
+            return Product.objects.filter(category__slug=self.kwargs['slug'])
+        return Product.objects.all()
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categorys'] = Category.objects.all()
+        if self.kwargs['slug'] != 'barchasi':
+            context['current_category'] = self.kwargs.get('slug')
+        else:
+            context['current_category']='barchasi'
+        return context
+
+class MyFavorites(ListView):
+    model = Product
+    context_object_name = 'products'
+    template_name = 'apps/product/favorite-products.html'
+
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            return Product.objects.filter(liked_by_users=self.request.user)
+
+
+def wishlist(request,slug):
+    product = Product.objects.filter(slug=slug).first()
+    user = request.user.id
+    Wishlist.objects.create(product_id=product.id,user_id=user)
+    return redirect('home')
+
+class WishListView(ListView):
+    template_name = 'apps/product/wishlist.html'
+    model=Wishlist
+    context_object_name='wishlists'
+    def get_queryset(self):
+        return Wishlist.objects.filter(user_id=self.request.user.id)
+class AuthView(View):
+    def get(self, request):
+        logout(request)
+        return render(self.request, 'apps/auth/login-register.html')
+
+    def post(self, request):
+        phone_number=request.POST['phone_number']
+        password=request.POST['password']
+        cleaned_phone_number = re.sub(r'\D', '', phone_number)[3:]
+        user=User.objects.filter(phone_number=cleaned_phone_number).first()
+        if user:
+            if check_password(password,user.password):
+                login(request, user)
+                return render(request,'home.html',{'user':request.user})
+            else:
+                print('Fail')
+        else:
+            print('aaail')
+
+
+
+
+
+
+@login_required
+@csrf_exempt
+def like_product(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        product_id = data.get('product_id')
+
+        try:
+            product = Product.objects.get(id=product_id)
+        except Product.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Product not found'}, status=404)
+
+        user = request.user
+        if user in product.liked_by_users.all():
+            product.liked_by_users.remove(user)
+            liked = False
+        else:
+            product.liked_by_users.add(user)
+            liked = True
+
+        return JsonResponse({'success': True, 'liked': liked})
+
+    return JsonResponse({'success': False}, status=400)
+
+def remove_from_wishlist(request,id):
+    if id:
+        Wishlist.objects.filter(id=id).delete()
+        return redirect('wishlist')
+
+
+
+git init
+git add .
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/ernazarov51/AliJahon267.git
+git push -u origin main

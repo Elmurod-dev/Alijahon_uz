@@ -1,0 +1,238 @@
+{% load static %}
+{% load humanize %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        Operatorlar bo'limi
+        - alijahon.uz</title>
+    <link rel="stylesheet" href="{% static 'apps/bootstrap/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'apps/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+    <link href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css" rel="stylesheet">
+    <style>
+        select {
+            width: 100%;
+        }
+    </style>
+
+</head>
+<body>
+<div>
+    <nav class="navbar navbar-dark bg-dark text-white" style="height: 10%;">
+
+
+        <a href="{% url 'questions_for_paymant' %}" class="btn btn-primary btn-sm">Payment</a>
+
+
+        <div>Buyurtmalar</div>
+        <h4>ID: {{ user.id }} </h4>
+        <a href="{% url 'home' %}" class="btn btn-danger btn-sm">Asosiy panel</a>
+    </nav>
+    <div class="row">
+        <div class="col-md-2 h-70 text-center" style="background-color: #38ffae; padding-right: 0; position:absolute;">
+            <div class="list-group text-light w-100 h-100">
+                <a href="{% url 'operator_page' %}?status=hammasi&category={{ current_category.slug }}&region={{ current_region.id }}&district={{ current_district.id }}"
+                   class="btn btn-primary list-group-item text-dark mt-1  {% if current_status == 'hammasi' %} active {% endif %} ">
+                    <div>
+                        <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+                    </div>
+                    <h6>Hammasi</h6>
+                </a>
+                {% for s in status %}
+                    <a href="{% url 'operator_page' %}?status={{ s.key }}&category={{ current_category.slug }}&region={{ current_region.id }}&district={{ current_district.id }}"
+                       class="btn btn-primary list-group-item text-dark mt-1  {% if current_status == s.key %} active {% endif %} ">
+                        <div>
+                            <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+                        </div>
+                        <h6>{{ s.name }}</h6>
+                    </a>
+                {% endfor %}
+
+            </div>
+        </div>
+        <div class="col-md-10" style="margin-left: 16%;">
+
+            <div class="bg-light w-75 m-auto mt-5">
+                
+
+                <form method="post" action="{% url 'operator_page' %}">
+                    {% csrf_token %}
+                    <p>
+                        <label  for="id_category">Category:</label>
+                        <select name="product__category_id" class="form-control">
+                            {% if current_category %}
+                                <option value="{{ current_category.slug }}">{{ current_category }}</option>
+                            {% else %}
+                                <option value="">Hammasi</option>
+                            {% endif %}
+
+                            <option value="" {% if current_category.slug == 'hammasi' %}selected{% endif %}>Hammasi
+                            </option>
+
+                            {% for category in categories %}
+                                <option value="{{ category.slug }}">{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+
+                    </p>
+
+                    <p>
+                        <label for="id_region">Region:</label>
+                        <select class="form-control" name="region" id="id_region">
+                            {% if current_region %}
+                                <option value="{{ current_region.id }}">{{ current_region.name }}</option>
+                            {% else %}
+                                <option value="">All selected</option>
+                            {% endif %}
+
+
+                            {% for region in regions %}
+                                <option value="{{ region.pk }}" {% if district_region == region.pk %}
+                                        selected {% endif %} >{{ region.name }} </option>
+                            {% endfor %}
+                        </select>
+
+                    <p>
+                        Shahar/Tuman
+                        <select class="form-control" id="id_district" name="district_id">
+                            {% if current_district %}
+                                <option value="{{ current_district.id }}">{{ current_district.name }}</option>
+                            {% else %}
+                                <option value="">Tumanni tanlang</option>
+                            {% endif %}
+                            {% for district in districts %}
+
+                                <option value="{{ district.id }}">{{ district.name }}</option>
+                            {% endfor %}
+
+                        </select>
+                    </p>
+                    {% if current_status %}
+                        <input type="hidden" name="status" value="{{ current_status }}">
+                    {% else %}
+                        <input type="hidden" name="status" value="{{ request.GET.status }}">
+                    {% endif %}
+                    <button type="submit">Search</button>
+                </form>
+
+                {% for order in orders %}
+                    <div class="card border-dark mt-5">
+                        <div class="card-body">
+                            <h2 class="card-title">{{ order.product.name }}
+                                - {{ order.discount_price|floatformat:0|intcomma }} so'm</h2>
+                            <h3 class="card-title text-danger">ZAKAZ ID: #{{ order.id }}</h3>
+                            <ul class="text-muted">
+                                {% if order.thread %}
+                                    <li class="">Reklama tarqatuvchi ID: {{ order.thread.user.id }}</li>
+                                {% endif %}
+                                <li class="">Client: {{ order.user.first_name }} ,
+                                    +998XXXXXXX
+                                </li>
+                                <li class="">Address: {{ order.user.district.region.name }}
+                                    , {{ order.user.district.name }}</li>
+                                <li class="">
+                                    Product: {{ order.product.name|title }}
+                                </li>
+                                <li class="">
+                                    Narxi: {{ order.product.price|floatformat:0|intcomma }} so'm
+                                </li>
+
+                                <li class="">Soni: {{ order.quantity }}ta</li>
+                                <li class="">Vaqti: {{ order.date_ordered|date:'Y-m-d H:i:s' }}</li>
+                                {#                                <li class="">Yangilangan vaqti: {{ order.update_at|date:'Y-m-d H:i:s' }}</li>#}
+                                <li class="">Holati: {{ order.status }}</li>
+                            </ul>
+                            <a href="{% url 'order_change' order.pk %}" class="btn btn-primary"
+                               style="float: left; margin-right: 10px;">
+                                {% if order.status == order.StatusChoices.completed %}
+                                	Buyurtma tafsilotlari
+                                {% else %}
+                                Qabul qilish
+                                {% endif %}
+                            </a>
+                            <a href="#" class="btn btn-primary"
+                               style="float: left; margin-right: 10px;">
+
+                                Hold
+
+                            </a>
+
+
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#id_region').change(function () {
+            var region_id = $(this).val();
+            if (region_id) {
+                $.ajax({
+                    url: '{% url "get_districts" %}',
+                    data: {'region_id': region_id},
+                    success: function (data) {
+                        var districtDropdown = $('#id_district');
+                        districtDropdown.empty();
+                        districtDropdown.append('<option value="">Tumanni tanlang</option>');
+                        $.each(data, function (key, value) {
+                            districtDropdown.append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+                    }
+                });
+            } else {
+                $('#id_district').empty().append('<option value="">Tumanni tanlang</option>');
+            }
+        });
+    });
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+<script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
+<script src="{% static 'apps/js/regions_filter.js' %}"></script>
+<script>
+    $(function () {
+        $('select').multipleSelect({
+            multiple: true,
+            multipleWidth: 500,
+            maxHeight: 200,
+            maxHeightUnit: 50,
+            filter: true
+        })
+    })
+</script>
+<script>
+    $(document).ready(function () {
+        $('#region-select').change(function () {
+            var regionId = $(this).val();
+            var $districtSelect = $('#district-select');
+            $districtSelect.empty();
+            $districtSelect.append('<option value="">All District</option>');
+
+            if (regionId) {
+                $.ajax({
+                    url: 'operator/ajax/get-districts/' + regionId + '/',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        $.each(data, function (index, district) {
+                            $districtSelect.append('<option value="' + district.id + '">' + district.name + '</option>');
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('An error occurred:', error);
+                    }
+                });
+            }
+        });
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</body>
+</html>
